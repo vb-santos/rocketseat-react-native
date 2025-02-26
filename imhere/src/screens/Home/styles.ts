@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   },
 
   input: {
+    flex: 1,
     backgroundColor: '#1F1E25',
     height: 56,
     borderRadius: 5,
@@ -42,6 +43,14 @@ export const styles = StyleSheet.create({
     
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  form: {
+    width: '100%',
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 36,
+    marginBottom: 42,
   },
 
   
