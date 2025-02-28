@@ -41,6 +41,7 @@ const Home = () => {
         </TouchableOpacity>
       </View>
 
+      {/* FlatList é utilizada para listas que geram muitos dados, pois não renderiza elementos fora de tela, diferente da scrollview que renderiza todos elementos sempre */}
       <FlatList
         data={participants}
         keyExtractor={item => item}
