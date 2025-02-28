@@ -3,9 +3,10 @@ import { styles } from "./styles";
 
 type Props = {
   name: string;
+  onRemove: () => void;
 }
 
-const Participant = ({ name }: Props) => {
+const Participant = ({ name, onRemove }: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>
