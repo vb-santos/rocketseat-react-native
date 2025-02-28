@@ -1,11 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 
-const Participant = () => {
+type Props = {
+  name: string;
+}
+
+const Participant = ({ name }: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>
-        Victor Barbosa
+        {name}
       </Text>
 
       <TouchableOpacity style={styles.button}>

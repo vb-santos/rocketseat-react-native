@@ -35,8 +35,8 @@ const Home = () => {
         </TouchableOpacity>
       </View>
 
-      <Participant />
-      <Participant />
+      <Participant name="Victor"/>
+      <Participant name="Isabel"/>
     </View>
   )
 }
