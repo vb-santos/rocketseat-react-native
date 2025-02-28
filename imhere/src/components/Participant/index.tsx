@@ -13,7 +13,7 @@ const Participant = ({ name, onRemove }: Props) => {
         {name}
       </Text>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onRemove}>
         <Text style={styles.buttonText}>
           -
         </Text>
