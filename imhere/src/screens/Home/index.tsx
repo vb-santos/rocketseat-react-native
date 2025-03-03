@@ -25,7 +25,7 @@ const Home = () => {
       },
       {
         text: "Remover",
-        onPress: () => console.log(`Removendo o participante ${name}`),
+        onPress: () => setParticipants(participants.filter(participant => participant !== name)),
       }
     ]);
   }
@@ -73,7 +73,7 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style = {styles.listEmptyText}>
-            Ningém chegou no evento ainda! Adicione participantes a sua lista de presença.
+            Ninguém chegou no evento ainda! Adicione participantes a sua lista de presença.
           </Text>
         )}
       />
