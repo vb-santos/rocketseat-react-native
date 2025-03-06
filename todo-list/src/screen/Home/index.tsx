@@ -1,5 +1,8 @@
 import { View } from 'react-native'
 
+import { Input } from '../../components/Input'
+import { Logo } from '../../components/Logo'
+
 import { styles } from './styles'
 
 const Home = () => {

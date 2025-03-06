@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
+import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   blackContainer: {
-    backgroundColor: ''
+    backgroundColor: theme.colors.gray_700,
+    height: '20%',
   },
 
   greyContainer: {
-
+    backgroundColor: theme.colors.gray_600,
+    height: '100%',
   },
 
 
