@@ -1,11 +1,15 @@
-
+import { View } from 'react-native'
 
 const Home = () => {
-  return (
-    <div>
-      Home
-    </div>
-  )
+  return (<>
+    <View style={styles.blackContainer}>
+
+    </View>
+
+    <View style={styles.greyContainer}>
+
+    </View>
+  </>)
 }
 
 export default Home

@@ -4,7 +4,11 @@ import { View } from 'react-native';
 const App = () => {
   return (
     <View>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
     </View>
   );
 }
