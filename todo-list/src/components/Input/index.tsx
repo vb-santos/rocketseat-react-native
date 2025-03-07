@@ -1,6 +1,7 @@
-import { Pressable, Image, View } from 'react-native';
+import { Pressable, Image, View, TextInput } from 'react-native';
 
 import { styles } from './styles'
+import { theme } from '../../styles/theme'
 
 type Props = {
   isPressed: boolean;
@@ -11,6 +12,13 @@ type Props = {
 export const Input = ({ isPressed, handlePressIn, handlePressOut }: Props) => {
   return (
     <View style={styles.container}>
+      <TextInput
+        placeholder='Adicione uma nova tarefa'
+        placeholderTextColor={theme.colors.gray_300}
+        style={styles.input}
+        
+      />
+
       <Pressable
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}

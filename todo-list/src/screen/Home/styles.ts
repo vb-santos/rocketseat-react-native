@@ -13,5 +13,7 @@ export const styles = StyleSheet.create({
   greyContainer: {
     backgroundColor: theme.colors.gray_600,
     height: '100%',
+
+    alignItems: 'center',
   },
 })
