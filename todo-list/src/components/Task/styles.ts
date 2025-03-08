@@ -6,10 +6,9 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
     marginBottom: 12,
 
-    padding: 16,
     borderRadius: 8,
     backgroundColor: theme.colors.gray_500,
 
@@ -22,5 +21,9 @@ export const styles = StyleSheet.create({
     color: theme.colors.gray_100,
     fontSize: 14,
     fontFamily: theme.fonts.text,
+  },
+
+  pressableIcon: {
+    padding: 16,
   }
 })

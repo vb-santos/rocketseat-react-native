@@ -2,9 +2,13 @@ import { StyleSheet } from "react-native";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+  },
+  
   blackContainer: {
     backgroundColor: theme.colors.gray_700,
-    height: '20%',
+    height: '25%',
 
     justifyContent: 'center',
     alignItems: 'center',
@@ -12,7 +16,7 @@ export const styles = StyleSheet.create({
 
   greyContainer: {
     backgroundColor: theme.colors.gray_600,
-    height: '100%',
+    height: '75%',
 
     alignItems: 'center',
   },
@@ -85,5 +89,6 @@ export const styles = StyleSheet.create({
 
   list: {
     width: '90%',
+    marginBottom: 42,
   }
 })

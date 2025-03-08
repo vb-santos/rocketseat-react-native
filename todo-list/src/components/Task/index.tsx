@@ -10,12 +10,14 @@ type Props = {
   isRemovePressed: boolean;
   toggleTaskState: (id: string, key: "isChecked" | "isPressed" | "isRemovePressed") => void;
   toggleBothStates: (id: string) => void;
+  removeTask: (id: string) => void;
 }
 
-export const Task = ({ id, title, isChecked, isPressed, isRemovePressed, toggleTaskState, toggleBothStates }: Props) => {
+export const Task = ({ id, title, isChecked, isPressed, isRemovePressed, toggleTaskState, toggleBothStates, removeTask }: Props) => {
   return (
     <View style={styles.container}>
       <Pressable
+        style={styles.pressableIcon}
         onPressIn={() => toggleBothStates(id)}
         onPressOut={() => toggleTaskState(id, "isPressed")}
       >
@@ -37,8 +39,8 @@ export const Task = ({ id, title, isChecked, isPressed, isRemovePressed, toggleT
       </Text>
 
       <Pressable
-        onPressIn={() => toggleTaskState(id, "isRemovePressed")}
-        onPressOut={() => toggleTaskState(id, "isRemovePressed")}
+        style={styles.pressableIcon}
+        onPressIn={() => removeTask(id)}
       >
         <Image
           source={
