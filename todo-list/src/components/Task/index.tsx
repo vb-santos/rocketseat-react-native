@@ -34,7 +34,7 @@ export const Task = ({ id, title, isChecked, isPressed, isRemovePressed, toggleT
         />
       </Pressable>
 
-      <Text style={styles.title}>
+      <Text style={isChecked ? styles.checkedTitle : styles.title}>
         {title}
       </Text>
 

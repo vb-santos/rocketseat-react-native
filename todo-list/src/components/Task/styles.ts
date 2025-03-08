@@ -23,6 +23,14 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fonts.text,
   },
 
+  checkedTitle: {
+    flex: 1,
+    color: theme.colors.gray_300,
+    fontSize: 14,
+    fontFamily: theme.fonts.text,
+    textDecorationLine: 'line-through',
+  },
+
   pressableIcon: {
     padding: 16,
   }
