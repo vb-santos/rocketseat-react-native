@@ -82,4 +82,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: theme.fonts.text,
   },
+
+  list: {
+    width: '90%',
+  }
 })

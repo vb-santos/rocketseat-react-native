@@ -1,28 +1,71 @@
-import { View, Image, Text, FlatList } from 'react-native'
-import { useState } from 'react'
+import { View, Image, Text, FlatList, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 
-import { Input } from '../../components/Input'
+import { Input } from '../../components/Input';
+import { Task } from '../../components/Task';
 
-import { styles } from './styles'
+import { styles } from './styles';
+
+type TaskType = {
+  id: string;
+  title: string;
+  isChecked: boolean;
+  isPressed: boolean;
+  isRemovePressed: boolean;
+};
 
 const Home = () => {
-  const [checked, setChecked] = useState<boolean>(false);
-  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   const [counterCreated, setCounterCreated] = useState<number>(0);
   const [counterDone, setCounterDone] = useState<number>(0);
 
-  const toggleChecked = () => {
-    setChecked(!checked);
+  const addTask = (title: string) => {
+    if (!title.trim() || tasks.find(task => task.title === title)){
+      Alert.alert('Erro', 'Tarefa inválida ou já existente');
+      return;
+    };
+
+    const newTask = {
+      id: title,
+      title,
+      isChecked: false,
+      isPressed: false,
+      isRemovePressed: false,
+    };
+
+    setTasks([...tasks, newTask]);
   };
 
-  const handlePressIn = () => {
-    setIsPressed(true);
+  const updateCounter = () => {
+    const doneCount = tasks.filter((task) => task.isChecked).length;
+    setCounterDone(doneCount);
+
+    const createdCount = tasks.length;
+    setCounterCreated(createdCount);
   };
 
-  const handlePressOut = () => {
-    setIsPressed(false);
+  const toggleTaskState = (id: string, key: keyof TaskType) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, [key]: !task[key] } : task
+      )
+    );
+  }
+
+  const toggleBothStates = (id: string) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id
+          ? { ...task, isChecked: !task.isChecked, isPressed: !task.isPressed }
+          : task
+      )
+    );
   };
+
+  useEffect(() => {
+    updateCounter();
+  }, [tasks]);
 
   return (<>
     <View style={styles.blackContainer}>
@@ -31,9 +74,7 @@ const Home = () => {
 
     <View style={styles.greyContainer}>
       <Input 
-        isPressed={isPressed}
-        handlePressIn={handlePressIn}
-        handlePressOut={handlePressOut}
+        addTask={addTask}
       />
 
       <View style={styles.amountContainer}>
@@ -47,19 +88,34 @@ const Home = () => {
           <Text style={styles.amount}>{counterDone}</Text>
         </View>
       </View>
-      <View style={styles.line}></View>
+ 
 
       <FlatList
-        data={null}
-        keyExtractor={item => item}
-        renderItem={({ item }) => null}
+        style={styles.list}
+        data={tasks}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Task
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            isChecked={item.isChecked}
+            isPressed={item.isPressed}
+            isRemovePressed={item.isRemovePressed}
+            toggleTaskState={toggleTaskState}
+            toggleBothStates={toggleBothStates}
+          />
+        )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
+        <>
+          <View style={styles.line}></View>
           <View style={styles.listEmptyContainer}>
             <Image source={require('../../../assets/Clipboard.png')}/>
             <Text style={styles.listEmptyTitle}>Você ainda não tem tarefas cadastradas</Text>
             <Text style={styles.listEmptyText}>Crie tarefas e organize seus itens a fazer</Text>
           </View>
+        </>
         )}
       />
     </View>
