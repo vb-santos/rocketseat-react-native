@@ -1,4 +1,4 @@
-import Groups from "./src/Groups";
+import Groups from "@screens/Groups"
 
 const App = () => {
   return (
