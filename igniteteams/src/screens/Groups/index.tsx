@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
-import { styles } from "./styles";
+import { Container, Title } from "./styles";
 
 const Groups = () => {
   return (
-    <View style={styles.container}>
-      <Text>CAVALO</Text>
-    </View>
+    <Container>
+      <Title>CAVALO</Title>
+    </Container>
   )
 }
 
