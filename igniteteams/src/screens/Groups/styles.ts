@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
+import { theme } from "@theme/index";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #000;
+  background-color: ${theme.COLORS.GREEN_700};
   align-items: center;
   justify-content: center;
 `;
