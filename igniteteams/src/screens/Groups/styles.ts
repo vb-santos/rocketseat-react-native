@@ -3,7 +3,7 @@ import { theme } from "@theme/index";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${theme.COLORS.GREEN_700};
+  background-color: ${theme.COLORS.GRAY_700};
   align-items: center;
   justify-content: center;
 `;

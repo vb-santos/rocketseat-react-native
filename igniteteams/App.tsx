@@ -1,6 +1,9 @@
 import { ActivityIndicator } from "react-native";
-import Groups from "@screens/Groups";
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+
+import Groups from "@screens/Groups";
+
+import { Loading } from "@components/Loading";
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -9,7 +12,7 @@ const App = () => {
   });
 
   if (!fontsLoaded) {
-    return <ActivityIndicator />
+    return <Loading/>
   }
 
   return (
