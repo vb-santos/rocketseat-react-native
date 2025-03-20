@@ -1,4 +1,4 @@
-import { ActivityIndicator } from "react-native";
+import { StatusBar } from "react-native";
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
 
 import Groups from "@screens/Groups";
@@ -15,9 +15,14 @@ const App = () => {
     return <Loading/>
   }
 
-  return (
+  return (<>
+    <StatusBar
+      barStyle="light-content"
+      backgroundColor="transparent"
+      translucent
+    />
     <Groups />
-  )
+  </>)
 }
 
 export default App
