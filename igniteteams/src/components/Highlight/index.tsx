@@ -5,7 +5,7 @@ type Props = {
   subtitle: string;
 }
 
-export const Highlight = ({ title, subtitle }: Props) => {
+export const Highlight = ({ title, subtitle }: Props ) => {
   return (
     <Container>
       <Title>{title}</Title>
