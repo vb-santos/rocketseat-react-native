@@ -3,7 +3,9 @@ import styled from "styled-components/native";
 
 import { theme } from "@theme/index";
 
-export const Container = styled(TextInput)`
+export const Container = styled(TextInput).attrs({
+  placeholderTextColor: theme.COLORS.GRAY_300
+})`
   flex: 1;
 
   min-height: 56px;

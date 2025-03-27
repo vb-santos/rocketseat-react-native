@@ -4,6 +4,8 @@ import { Container } from "./styles";
 
 export const Input = ({ ...rest }: TextInputProps) => {
   return (
-    <Container {...rest}/> 
+    <Container
+      {...rest}
+    /> 
   )
 }
