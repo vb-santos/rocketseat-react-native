@@ -2,6 +2,7 @@ import { Container } from "./styles";
 
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
+import { ButtonIcon } from "@components/ButtonIcon";
 
 const Players = () => {
   return (
@@ -13,6 +14,7 @@ const Players = () => {
         subtitle="Adicione a galera e separe os times"
       />
 
+      <ButtonIcon />
     </Container>
   )
 }
