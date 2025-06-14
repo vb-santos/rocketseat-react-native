@@ -11,8 +11,10 @@ import { ButtonIcon } from "@components/ButtonIcon";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 
+import { AppError } from "@utils/AppError";
 import { playerAddByGroup } from "@storage/player/playerAddByGroup";
-import { playersGetByGroup } from "@storage/player/playersGetByGroup";
+import { playersGetByGroupAndTeam } from "@storage/player/playersGetByGroupAndTeam";
+import {PlayerStorageDTO} from "@storage/player/PlayerStorageDTO";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 
@@ -25,7 +27,7 @@ type RouteParams = {
 const Players = () => {
   const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState('Time A');
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
   const route = useRoute()
   const { group } = route.params as RouteParams;
@@ -42,17 +44,28 @@ const Players = () => {
 
     try {
       await playerAddByGroup(newPlayer, group)
-      const players = await playersGetByGroup(group);
 
     } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert("Nova Pessoa", error.message);
+      if (error instanceof AppError) {
+        Alert.alert("Nova Pessoa", AppError.message);
       } else {
         console.log(error);
         Alert.alert("Nova Pessoa", "Não foi possível adicionar");
       }
     }
   }
+
+  const fetchPlayersByTeam = async () => {
+    try {
+      const playersByTeam = await playersGetByGroupAndTeam(group, team);
+      setPlayers(playersByTeam);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Nova Pessoa", "Não foi possível carregar as pessoas do time selecionado, tente novamente.");
+    }
+  }
+
+
 
   return (
     <Container>
