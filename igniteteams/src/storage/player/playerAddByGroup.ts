@@ -10,7 +10,7 @@ export const playerAddByGroup = async (newPlayer: PlayerStorageDTO, group: strin
     const storedPlayers = await playersGetByGroup(group);
 
     const playerAlreadyExists = storedPlayers.filter(player => player.name === newPlayer.name);
-    if (playerAlreadyExists) {
+    if (playerAlreadyExists.length > 0) {
       throw new AppError("O Jogador já está cadastrado em algum time.")
     }
 
