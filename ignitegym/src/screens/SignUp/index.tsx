@@ -53,7 +53,6 @@ export const SignUp = () => {
           </Center>
 
           <Button title="Fazer Login" variant="outline" mt="$12" />
-
         </VStack>
       </VStack>
     </ScrollView>
