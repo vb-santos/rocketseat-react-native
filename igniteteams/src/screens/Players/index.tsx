@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Alert, FlatList, TextInput } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
@@ -12,13 +12,14 @@ import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 
 import { AppError } from "@utils/AppError";
+import { PlayerStorageDTO } from "@storage/player/PlayerStorageDTO";
 import { playerAddByGroup } from "@storage/player/playerAddByGroup";
 import { playersGetByGroupAndTeam } from "@storage/player/playersGetByGroupAndTeam";
 import { playerRemoveByGroup } from "@storage/player/playerRemoveByGroup";
-import { PlayerStorageDTO } from "@storage/player/PlayerStorageDTO";
+
+import { groupRemoveByName } from "@storage/group/groupRemoveByName";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
-
 
 
 type RouteParams = {
@@ -31,6 +32,7 @@ const Players = () => {
   const [team, setTeam] = useState('Time A');
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
+  const navigation = useNavigation();
   const route = useRoute()
   const { group } = route.params as RouteParams;
 
@@ -81,6 +83,27 @@ const Players = () => {
       console.log(error);
       Alert.alert("Remover Pessoa", "Não foi possível remover essa pessoa");
     }
+  }
+
+  const groupRemove = async () => {
+    try {
+      await groupRemoveByName(group);
+      navigation.navigate("groups");
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Remover grupo", "Não foi possível remover o grupo")
+    }
+  }
+
+  const handleRemoveGroup = async () => {
+    Alert.alert(
+      "Remover",
+      "Deseja remover o grupo?",
+      [
+        { text: "Não", style: "cancel" },
+        { text: "Sim", onPress: () => groupRemove() }
+      ]
+    )
   }
 
   useEffect(() => {
@@ -157,6 +180,7 @@ const Players = () => {
       <Button
         title="Remover Turma"
         type="SECONDARY"
+        onPress={handleRemoveGroup}
       />
     </Container>
   )
