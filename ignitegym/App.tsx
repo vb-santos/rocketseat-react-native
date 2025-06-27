@@ -8,7 +8,7 @@ import {
 } from "@expo-google-fonts/roboto";
 
 import { Loading } from "@components/Loading";
-import { SignIn } from "@screens/SignIn";
+import { SignUp } from "@screens/SignUp";
 
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
           translucent
         />
         { fontsLoaded ? (
-          <SignIn />
+          <SignUp />
         ) : (
           <Loading />
         )}
