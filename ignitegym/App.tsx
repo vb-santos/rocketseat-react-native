@@ -7,8 +7,8 @@ import {
   Roboto_400Regular,
 } from "@expo-google-fonts/roboto";
 
+import { Routes } from "@routes/index";
 import { Loading } from "@components/Loading";
-import { SignUp } from "@screens/SignUp";
 
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
           translucent
         />
         { fontsLoaded ? (
-          <SignUp />
+          <Routes />
         ) : (
           <Loading />
         )}
