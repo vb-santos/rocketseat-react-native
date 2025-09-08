@@ -12,7 +12,7 @@ import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
 export const SignUp = () => {
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm();
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -20,7 +20,7 @@ export const SignUp = () => {
     navigation.navigate("signIn");
   }
 
-  const handleSignUp = () => {
+  const handleSignUp = (data: any) => {
 
   }
 
@@ -101,13 +101,15 @@ export const SignUp = () => {
                   secureTextEntry
                   onChangeText={onChange}
                   value={value}
+                  onSubmitEditing={handleSubmit(handleSignUp)}
+                  returnKeyType="send"
                 />
               )}
             />
 
             <Button
               title="Criar e acessar"
-              onPress={handleSignUp}
+              onPress={handleSubmit(handleSignUp)}
             />
           </Center>
 
