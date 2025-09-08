@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
@@ -11,8 +10,17 @@ import Logo from "@assets/logo.svg";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+}
+
+
 export const SignUp = () => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>();
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -20,7 +28,7 @@ export const SignUp = () => {
     navigation.navigate("signIn");
   }
 
-  const handleSignUp = (data: any) => {
+  const handleSignUp = (data: FormDataProps) => {
 
   }
 
@@ -56,11 +64,15 @@ export const SignUp = () => {
             <Controller
               control={control}
               name="name"
+              rules={{
+                required: "Informe o nome"
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input
                   placeholder="Nome"
                   onChangeText={onChange}
                   value={value}
+                  errorMessage={errors.name?.message}
                 />
               )}
             />
@@ -68,6 +80,13 @@ export const SignUp = () => {
             <Controller
               control={control}
               name="email"
+              rules={{
+                required: "Informe o email",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Email inválido!"
+                }
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input
                   placeholder="E-mail"
@@ -75,6 +94,7 @@ export const SignUp = () => {
                   autoCapitalize="none"
                   onChangeText={onChange}
                   value={value}
+                  errorMessage={errors.email?.message}
                 />
               )}
             />
