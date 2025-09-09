@@ -4,7 +4,7 @@ import { Box } from "@gluestack-ui/themed";
 import { AuthRoutes } from "@routes/auth.routes";
 import { AppRoutes} from "@routes/app.routes";
 
-import { gluestackUIConfig } from "../../config/gluestack-ui.config"
+import { gluestackUIConfig } from "../../frontend/config/gluestack-ui.config"
 
 export const Routes = () => {
   const theme = DefaultTheme

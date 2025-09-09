@@ -1,6 +1,6 @@
 import { StatusBar } from 'react-native';
 import { GluestackUIProvider, Text, Center } from "@gluestack-ui/themed";
-import { config } from "./config/gluestack-ui.config";
+import { config } from "./frontend/config/gluestack-ui.config";
 import {
   useFonts,
   Roboto_700Bold,
