@@ -1,8 +1,12 @@
+import { Alert } from "react-native";
 import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
+import axios from "axios";
+
+import { api } from "@services/api";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
@@ -47,17 +51,26 @@ export const SignUp = () => {
   }
 
   const handleSignUp = async (data: FormDataProps) => {
-    const response = await fetch("http://192.168.1.5:3333/users", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
+    try {
+      const response = await api.post("/users", data);
+    } catch (error) {
+      if(axios.isAxiosError(error)) {
+        Alert.alert(error.response?.data?.message);
+      }
+    }
 
-    const dataEnd = await response.json();
-    console.log(dataEnd);
+
+    // const response = await fetch("http://192.168.1.5:3333/users", {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept": "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    //
+    // const dataEnd = await response.json();
+    // console.log(dataEnd);
   }
 
   return (
