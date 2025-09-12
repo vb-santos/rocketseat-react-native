@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import { createBottomTabNavigator, BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
-import { gluestackUIConfig } from "../../frontend/config/gluestack-ui.config";
+import { gluestackUIConfig } from "../../config/gluestack-ui.config";
 import HomeSvg from "@assets/home.svg";
 import HistorySvg from "@assets/history.svg";
 

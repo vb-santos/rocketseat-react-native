@@ -46,8 +46,18 @@ export const SignUp = () => {
     navigation.navigate("signIn");
   }
 
-  const handleSignUp = (data: FormDataProps) => {
+  const handleSignUp = async (data: FormDataProps) => {
+    const response = await fetch("http://192.168.1.5:3333/users", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
 
+    const dataEnd = await response.json();
+    console.log(dataEnd);
   }
 
   return (
