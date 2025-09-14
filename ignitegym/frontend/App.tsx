@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { GluestackUIProvider, Text, Center } from "@gluestack-ui/themed";
+import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "./config/gluestack-ui.config";
 import {
   useFonts,
@@ -19,14 +19,14 @@ const App = () => {
 
   return (
     <GluestackUIProvider config={config}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
-      <AuthContextProvider>
-        { fontsLoaded ? (<Routes />) : <Loading />}
-      </AuthContextProvider>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        <AuthContextProvider>
+          { fontsLoaded ? (<Routes />) : <Loading />}
+        </AuthContextProvider>
     </GluestackUIProvider>
   );
 }

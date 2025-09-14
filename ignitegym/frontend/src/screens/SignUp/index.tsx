@@ -12,14 +12,15 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 
-import { Input } from "@components/Input";
-import { Button } from "@components/Button";
-
-import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
-
 import { api } from "@services/api";
 
 import { AppError } from "@utils/AppError";
+
+import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
+
+import { Input } from "@components/Input";
+import { Button } from "@components/Button";
+import { ToastMessage } from "@components/ToastMessage";
 
 import BackgroundImg from "@assets/background.png";
 import Logo from "@assets/logo.svg";
@@ -67,11 +68,17 @@ export const SignUp = () => {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : "Não foi possível criar a conta. Tente novamente mais tarde.";
 
-      // toast.show({
-      //   title,
-      //   placement: "top",
-      //   bgColor: "$red500"
-      // });
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="error"
+            title={title}
+            onClose={() => toast.close(id)}
+          />
+        )
+      });
     }
   }
 
