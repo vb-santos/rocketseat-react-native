@@ -7,6 +7,10 @@ export const storageUserSave = async (user: UserDTO) => {
   await AsyncStorage.setItem(USER_STORAGE, JSON.stringify(user));
 }
 
+export const storageUserRemove = async () => {
+  await AsyncStorage.removeItem(USER_STORAGE);
+}
+
 export const storageUserGet = async () => {
   const storage = await AsyncStorage.getItem(USER_STORAGE);
 
