@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 
 import { storageUserSave, storageUserGet, storageUserRemove } from "@storage/storageUser";
+import { storageAuthTokenSave, storageAuthTokenGet, storageAuthTokenRemove } from "@storage/storageAuthToken";
 
 import { api } from "@services/api";
 import { UserDTO } from "@dtos/UserDTO";
@@ -22,24 +23,48 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<UserDTO>({} as UserDTO);
   const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true);
 
+  const userAndTokenUpdate= async (userData: UserDTO, token: string) => {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    setUser(userData);
+  }
+
+  const storageUserAndTokenSave = async (userData: UserDTO, token: string) => {
+    try {
+      setIsLoadingUserStorageData(true);
+
+      await storageUserSave(userData);
+      await storageAuthTokenSave(token);
+    } catch (error)  {
+      throw error;
+    } finally {
+      setIsLoadingUserStorageData(false);
+    }
+  }
+
   const signIn = async (email: string, password: string) => {
     try {
       const { data } = await api.post("/sessions", { email, password });
 
-      if (data.user) {
-        setUser(data.user);
-        await storageUserSave(data.user);
+      if (data.user && data.token) {
+        setIsLoadingUserStorageData(true);
+
+        await storageUserAndTokenSave(data.user, data.token);
+        await userAndTokenUpdate(data.user, data.token);
       }
     } catch (error){
       throw error;
+    } finally {
+      setIsLoadingUserStorageData(false);
     }
   }
 
   const signOut = async () => {
     try {
       setIsLoadingUserStorageData(true);
+
       setUser({} as UserDTO);
       await storageUserRemove()
+      await storageAuthTokenRemove()
     } catch (error) {
       throw error;
     } finally {
@@ -49,10 +74,13 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const loadUserData = async () => {
     try {
-      const userLogged = await storageUserGet()
+      setIsLoadingUserStorageData(true);
 
-      if (userLogged) {
-        setUser(userLogged);
+      const userLogged = await storageUserGet();
+      const token = await storageAuthTokenGet();
+
+      if (token && userLogged) {
+        await userAndTokenUpdate(userLogged, token);
       }
     } catch (error) {
       throw error;

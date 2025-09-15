@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   VStack,
   Image,
@@ -17,6 +18,8 @@ import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
+
+import { useAuth } from "@hooks/useAuth";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
@@ -49,6 +52,10 @@ const signUpSchema = yup.object({
 
 
 export const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { signIn } = useAuth()
+
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema)
   });
@@ -63,8 +70,14 @@ export const SignUp = () => {
 
   const handleSignUp = async (data: FormDataProps) => {
     try {
-      const response = await api.post("/users", data);
+      setIsLoading(true);
+
+      await api.post("/users", data);
+      await signIn(data.email, data.password);
+
     } catch (error) {
+      setIsLoading(false);
+
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : "Não foi possível criar a conta. Tente novamente mais tarde.";
 
@@ -172,6 +185,7 @@ export const SignUp = () => {
             <Button
               title="Criar e acessar"
               onPress={handleSubmit(handleSignUp)}
+              isLoading={isLoading}
             />
           </Center>
 
