@@ -2,9 +2,19 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { HStack, Image, Heading, VStack, Text, Icon } from "@gluestack-ui/themed";
 import { ChevronRight } from "lucide-react-native"
 
-type Props = TouchableOpacityProps & {}
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
 
-export const ExerciseCard = ({ ...rest }: Props) => {
+import { api } from "@services/api";
+
+
+type Props = TouchableOpacityProps & {
+  data: ExerciseDTO
+}
+
+
+export const ExerciseCard = ({ data, ...rest }: Props) => {
+
+
   return (
     <TouchableOpacity {...rest}>
       <HStack
@@ -16,10 +26,7 @@ export const ExerciseCard = ({ ...rest }: Props) => {
         mb="$3"
       >
         <Image
-          source={{
-            uri: "https://static.wixstatic.com/media/2edbed_76fbc91ccd0c44d88e3b1624debf9f09~mv2.gif/v1/fill/" +
-              "w_980,h_980,al_c,usm_0.66_1.00_0.01,pstr/2edbed_76fbc91ccd0c44d88e3b1624debf9f09~mv2.gif"
-          }}
+          source={{ uri: `${api.defaults.baseURL}/exercise/thumb/${data.thumb}` }}
           alt="Imagem do exercício"
           w="$16"
           h="$16"
@@ -29,8 +36,22 @@ export const ExerciseCard = ({ ...rest }: Props) => {
         />
 
         <VStack flex={1}>
-          <Heading fontSize="$lg" color="$white" fontFamily="$heading">Cadeira Flexora</Heading>
-          <Text fontSize="$sm" color="$gray200" mt="$1" numberOfLines={2}>3 Séries x 12 Repetições</Text>
+          <Heading
+            fontSize="$lg"
+            color="$white"
+            fontFamily="$heading"
+          >
+            {data.name}
+          </Heading>
+
+          <Text
+            fontSize="$sm"
+            color="$gray200"
+            mt="$1"
+            numberOfLines={2}
+          >
+            {data.series} Séries x {data.repetitions} Repetições
+          </Text>
         </VStack>
 
         <Icon as={ChevronRight} color="$gray300" />
