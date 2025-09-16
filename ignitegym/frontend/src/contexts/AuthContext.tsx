@@ -24,8 +24,13 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true);
 
   const userAndTokenUpdate= async (userData: UserDTO, token: string) => {
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setUser(userData);
+    try {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setUser(userData);
+    } catch (error) {
+      console.error("Error setting auth header:", error);
+      throw error;
+    }
   }
 
   const storageUserAndTokenSave = async (userData: UserDTO, token: string) => {
