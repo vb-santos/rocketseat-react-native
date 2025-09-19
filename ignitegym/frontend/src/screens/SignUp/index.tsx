@@ -62,11 +62,11 @@ export const SignUp = () => {
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
+  const toast = useToast();
+
   const handleGoBack = () => {
     navigation.navigate("signIn");
   }
-
-  const toast = useToast();
 
   const handleSignUp = async (data: FormDataProps) => {
     try {
