@@ -60,7 +60,7 @@ export const Profile = () => {
   const [userPhoto, setUserPhoto] = useState("https://github.com/victorb-s.png");
   
   const toast = useToast();
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     defaultValues: {
       name: user.name,
@@ -116,6 +116,12 @@ export const Profile = () => {
     try {
       setIsLoading(true);
 
+      const userUpdated = user;
+      userUpdated.name = data.name;
+
+      await api.put("/users", data);
+      await updateUserProfile(userUpdated);
+
       toast.show({
         placement: "top",
         render: ({ id }) => (
@@ -127,8 +133,6 @@ export const Profile = () => {
           />
         )
       })
-
-      await api.put("/users", data);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : "Não foi possível atualizar os dados. Tente novamente mais tarde"
