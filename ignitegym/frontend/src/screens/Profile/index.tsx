@@ -13,6 +13,8 @@ import { api } from "@services/api";
 
 import { AppError } from "@utils/AppError";
 
+import defaultUserPhotoImg from "@assets/userPhotoDefault.png";
+
 import { ToastMessage } from "@components/ToastMessage";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
@@ -57,7 +59,6 @@ type FormDataProps = {
 
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState("https://github.com/victorb-s.png");
   
   const toast = useToast();
   const { user, updateUserProfile } = useAuth();
@@ -88,8 +89,7 @@ export const Profile = () => {
             <ToastMessage
               id={id}
               action="error"
-              title="Tamanho da imagem muito grande!"
-              description="Essa imagem é muito grande, escolha uma de até 5MB."
+              title="Seleção de foto cancelada"
               onClose={() => toast.close(id)}
             />
           )
@@ -102,10 +102,52 @@ export const Profile = () => {
         const photoInfo = await FileSystem.getInfoAsync(photoURI) as { size: number };
 
         if (photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
-          return 
+          return toast.show({
+            placement: "top",
+            render: ({ id }) => (
+              <ToastMessage
+                id={id}
+                action="error"
+                title="Tamanho da imagem muito grande!"
+                description="Essa imagem é muito grande, escolha uma de até 5MB."
+                onClose={() => toast.close(id)}
+              />
+            )
+          });
         }
 
-        setUserPhoto(photoURI);
+        const fileExtension = photoURI.split(".").pop();
+
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase().replace(/\s/g, ""),
+          uri: photoURI,
+          type: `${photoSelected.assets[0].type}/${fileExtension}`,
+        } as any;
+
+        const userPhotoUploadForm = new FormData();
+        userPhotoUploadForm.append("avatar", photoFile);
+
+        const response = await api.patch("/users/avatar", userPhotoUploadForm, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        });
+
+        const userUpdated = user;
+        userUpdated.avatar = response.data.avatar;
+        await updateUserProfile(userUpdated);
+
+        toast.show({
+          placement: "top",
+          render: ({ id }) => (
+            <ToastMessage
+              id={id}
+              action="success"
+              title="Foto atualizada com sucesso!"
+              onClose={() => toast.close(id)}
+            />
+          )
+        });
       }
     } catch (error) {
       console.log(error);
@@ -160,7 +202,11 @@ export const Profile = () => {
       <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
         <Center mt="$6" px="$10">
           <UserPhoto
-            source={{ uri: userPhoto }}
+            source={
+              user.avatar
+                ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                : defaultUserPhotoImg
+            }
             alt="Foto de perfil do usuário"
             size="xl"
           />
