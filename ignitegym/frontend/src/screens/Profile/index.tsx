@@ -59,6 +59,7 @@ type FormDataProps = {
 
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   
   const toast = useToast();
   const { user, updateUserProfile } = useAuth();
@@ -75,9 +76,11 @@ export const Profile = () => {
 
   const handleUserPhotoSelect = async () => {
     try {
+      setIsUploadingPhoto(true);
+
       const photoSelected = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        quality: 1,
+        quality: 0.7,
         aspect: [4, 4],
         allowsEditing: true,
       })
@@ -117,11 +120,12 @@ export const Profile = () => {
         }
 
         const fileExtension = photoURI.split(".").pop();
+        const fileName = `${user.name}.${fileExtension}`.toLowerCase().replace(/\s/g, "");
 
         const photoFile = {
-          name: `${user.name}.${fileExtension}`.toLowerCase().replace(/\s/g, ""),
+          name: fileName,
           uri: photoURI,
-          type: `${photoSelected.assets[0].type}/${fileExtension}`,
+          type: `image/${fileExtension}`,
         } as any;
 
         const userPhotoUploadForm = new FormData();
@@ -130,10 +134,11 @@ export const Profile = () => {
         const response = await api.patch("/users/avatar", userPhotoUploadForm, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
+          },
+          timeout: 30000
         });
 
-        const userUpdated = user;
+        const userUpdated = { ...user };
         userUpdated.avatar = response.data.avatar;
         await updateUserProfile(userUpdated);
 
@@ -150,7 +155,21 @@ export const Profile = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao enviar imagem:", error);
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="error"
+            title="Erro ao enviar imagem"
+            description="Tente novamente com uma imagem menor"
+            onClose={() => toast.close(id)}
+          />
+        )
+      });
+    } finally {
+      setIsUploadingPhoto(false);
     }
   }
 
@@ -211,7 +230,10 @@ export const Profile = () => {
             size="xl"
           />
 
-          <TouchableOpacity onPress={handleUserPhotoSelect}>
+          <TouchableOpacity
+            onPress={handleUserPhotoSelect}
+            disabled={isUploadingPhoto}
+          >
             <Text
               color="$green500"
               fontFamily="$heading"
@@ -219,7 +241,7 @@ export const Profile = () => {
               mt="$2"
               mb="$8"
             >
-              Alterar Foto
+              {isUploadingPhoto ? "Enviando..." : "Alterar Foto"}
             </Text>
           </TouchableOpacity>
 
